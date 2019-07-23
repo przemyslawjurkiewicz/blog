@@ -37,12 +37,13 @@ class SinglePost extends React.Component {
 }
 
 SinglePost.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired
-  }),
-
+  posts: PropTypes.shape(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired
+    })
+  ),
   loadPost: PropTypes.func.isRequired
 };
 
