@@ -9,6 +9,7 @@ const createActionName = name => `app/${reducerName}/${name}`;
 /* SELECTORS */
 
 export const getPosts = ({posts}) => posts.data;
+export const getPost = ({posts}) => posts.singlePost;
 export const getPostsNumber = ({posts}) => posts.data.length;
 export const getRequest = ({posts}) => posts.request;
 
@@ -16,6 +17,9 @@ export const getRequest = ({posts}) => posts.request;
 
 export const LOAD_POSTS = createActionName('LOAD_POSTS');
 export const loadPosts = payload => ({payload, type: LOAD_POSTS});
+
+export const LOAD_POST = createActionName('LOAD_POST');
+export const loadPost = payload => ({payload, type: LOAD_POST});
 
 export const START_REQUEST = createActionName('START_REQUEST');
 export const startRequest = () => ({type: START_REQUEST});
@@ -41,10 +45,24 @@ export const loadPostsRequest = () => {
   };
 };
 
+export const loadPostRequest = (id) => {
+  return async dispatch => {
+    dispatch(startRequest());
+    try {
+      let res = await axios.get(`${API_URL}/posts/${id}`);
+      dispatch(loadPost(res.data));
+      dispatch(endRequest());
+    } catch (e) {
+      dispatch(errorRequest(e.message));
+    }
+  };
+};
+
 /* INITIAL STATE */
 
 const initialState = {
   data: [],
+  singlePost: {},
   request: {
     pending: false,
     error: null,
@@ -58,6 +76,8 @@ export default function reducer(statePart = initialState, action = {}) {
   switch (action.type) {
     case LOAD_POSTS:
       return {...statePart, data: action.payload};
+    case LOAD_POST:
+      return {...statePart, singlePost: action.payload};
     case START_REQUEST:
       return {
         ...statePart,
