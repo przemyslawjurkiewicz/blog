@@ -8,9 +8,10 @@ import HtmlBox from '../../common/HtmlBox/HtmlBox';
 import cutText from '../../../utils/cutText';
 import './PostSummary.scss';
 
-const PostSummary = ({id, title, content}) => (
+const PostSummary = ({id, title, content, author}) => (
   <article className='post-summary'>
     <SmallTitle>{title}</SmallTitle>
+    <p>Author: {author}</p>
     <HtmlBox>{cutText(content, 250)}</HtmlBox>
     <NavLink exact to={'/posts/' + id}>
       <Button variant='primary'>Read more</Button>
@@ -21,7 +22,8 @@ const PostSummary = ({id, title, content}) => (
 PostSummary.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
-  content: PropTypes.string
+  content: PropTypes.string,
+  author: PropTypes.string
 };
 
 export default PostSummary;
